@@ -2,7 +2,9 @@
 {% block header %}
     <h2>{% block title %}Publicaciones {% endblock %}</h2>
     {% if g.user %}
-        <a href="{{ url_for('blog.create') }}">Nueva Publicación</a>
+        <div class="post-links">
+            <a href="{{ url_for('blog.create') }}" class="new-post">Nueva Publicación</a>
+        </div>
     {% endif%}
 {% endblock %}
 
@@ -20,8 +22,11 @@
             </div>
             <div>
                 {% if g.user.id == post.author %}
-                    <a href="{{ url_for('blog.update', id=post.id) }}">Editar</a>
-                    <a href="{{ url_for('blog.delete', id=post.id) }}">Eliminar</a>
+                    <div class="post-links">
+                        <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
+                        <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
+                    </div>
+                    
                 {% endif %}
             </div>
         </header>
