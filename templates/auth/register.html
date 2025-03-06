@@ -9,6 +9,15 @@
         <input type="text" name="username" id="username" required>
         <label for="password">Contraseña</label>
         <input type="password" name="password" id="password" required>
+        
+        <label for="role">Selecciona tu rol</label>
+        <select name="role" id="role" required>
+            <option value="profesor_creador">Profesor Creador</option>
+            <option value="alumno_creador">Alumno Creador</option>
+            <option value="profesor_lector">Profesor Lector</option>
+            <option value="alumno_lector">Alumno Lector</option>
+        </select>
+        
         <input type="submit", value="Registrar">
     </form>
 {% endblock %}
