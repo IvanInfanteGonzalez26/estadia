@@ -36,9 +36,6 @@ def create():
         error = None
         if not title:
             error = 'Se requiere un título'
-        
-        if error is not None:
-            flash(error)
         else:
             db.session.add(post)
             db.session.commit()
@@ -73,9 +70,6 @@ def update(id):
         error = None
         if not post.title:
             error = 'Se requiere un título'
-        
-        if error is not None:
-            flash(error)
         else:
             db.session.add(post)
             db.session.commit()

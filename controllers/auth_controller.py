@@ -12,10 +12,8 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 @auth.route('/register', methods=('GET','POST'))
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        user = User(username, generate_password_hash(password))
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
 
         error = None
         if not username:
@@ -23,13 +21,16 @@ def register():
         elif not password:
             error = 'Se requiere contraseña'
         
-        user_name = User.query.filter_by(username = username).first()
-        if user_name == None:
+        user_name = User.query.filter_by(username=username).first()
+
+        if user_name: error = f'El usuario {username} ya está registrado'
+
+        if error is None:
+            user = User(username, generate_password_hash(password))
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('auth.login'))
-        else:
-            error = f'El usuario {username} ya esta registrado'
+
         flash(error)
         
     return render_template('auth/register.html')
