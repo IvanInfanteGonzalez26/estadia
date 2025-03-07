@@ -11,28 +11,30 @@
 {% block content %}
 
 {% for post in posts %}
-    <article>
-        <header>
-            <div>
-               <h1>{{ post.title }}</h1>
-                <div class="about">
-                    Publicado por {{ get_user(post.author).username}}
-                    el {{ post.created.strftime('%Y-%m-%d') }}
-                </div> 
-            </div>
-            <div>
-                {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] and g.user.id == post.author %}
-                    <div class="post-links">
-                        <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
-                        <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
+    {% if get_user(post.author) %} {# Solo mostrar si el usuario tiene permiso para ver este recurso #}
+        <article>
+            <header>
+                <div>
+                    <h1>{{ post.title }}</h1>
+                    <div class="about">
+                        Publicado por {{ get_user(post.author).username }}
+                        el {{ post.created.strftime('%Y-%m-%d') }}
                     </div>
-                {% endif %}
+                </div>
+                <div>
+                    {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] and g.user.id == post.author %}
+                        <div class="post-links">
+                            <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
+                            <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </header>
+            <div>
+                <p>{{ post.body }}</p>
             </div>
-        </header>
-        <div>
-            <p>{{ post.body }}</p>
-        </div>
-    </article>
+        </article>
+    {% endif %}
 {% endfor %}
 
 {% endblock %}

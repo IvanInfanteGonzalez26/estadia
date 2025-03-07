@@ -14,11 +14,23 @@ blog = Blueprint('blog', __name__)
 #Obtner un ususario
 def get_user(id):
     user = User.query.get_or_404(id)
+    if g.user.role == "profesor" and user.role != "instructor_profesores":
+        return None
+    elif g.user.role == "estudiante" and user.role != "instructor_estudiantes":
+        return None
     return user
 
 @blog.route("/")
 def index():
-    posts = Post.query.all()
+    if g.user:
+        if g.user.role == "profesor":
+            posts = Post.query.join(User).filter(User.role == "instructor_profesores").all()
+        elif g.user.role == "estudiante":
+            posts = Post.query.join(User).filter(User.role == "instructor_estudiantes").all()
+        else:
+            posts = Post.query.filter_by(author=g.user.id).all()
+    else:
+        posts = []
     posts = list(reversed(posts))
     db.session.commit()
     return render_template('blog/index.html', posts = posts, get_user=get_user)
