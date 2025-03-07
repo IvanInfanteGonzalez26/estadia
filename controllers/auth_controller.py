@@ -14,6 +14,7 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
+        role = request.form.get('role')
 
         error = None
         if not username:
@@ -26,7 +27,7 @@ def register():
         if user_name: error = f'El usuario {username} ya está registrado'
 
         if error is None:
-            user = User(username, generate_password_hash(password))
+            user = User(username, generate_password_hash(password), role)
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('auth.login'))
