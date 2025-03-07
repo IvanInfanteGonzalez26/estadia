@@ -1,40 +1,61 @@
 {% extends 'base.html' %}
+
 {% block header %}
-    <h2>{% block title %}Recursos {% endblock %}</h2>
-    {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
-        <div class="post-links">
-            <a href="{{ url_for('blog.create') }}" class="new-post">Nueva Publicación</a>
-        </div>
-    {% endif%}
+    {% if g.user %}
+        <h2>{% block title %}Recursos{% endblock %}</h2>
+        {% if g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
+            <div class="post-links">
+                <a href="{{ url_for('blog.create') }}" class="new-post">Nueva Publicación</a>
+            </div>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-
-{% for post in posts %}
-    {% if get_user(post.author) %} {# Solo mostrar si el usuario tiene permiso para ver este recurso #}
-        <article>
-            <header>
-                <div>
-                    <h1>{{ post.title }}</h1>
-                    <div class="about">
-                        Publicado por {{ get_user(post.author).username }}
-                        el {{ post.created.strftime('%Y-%m-%d') }}
-                    </div>
-                </div>
-                <div>
-                    {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] and g.user.id == post.author %}
-                        <div class="post-links">
-                            <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
-                            <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
+{% if g.user %}
+    {% for post in posts %}
+        {% if get_user(post.author) %}
+            <article>
+                <header>
+                    <div>
+                        <h1>{{ post.title }}</h1>
+                        <div class="about">
+                            Publicado por {{ get_user(post.author).username }}
+                            el {{ post.created.strftime('%Y-%m-%d') }}
                         </div>
-                    {% endif %}
+                    </div>
+                    <div>
+                        {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] and g.user.id == post.author %}
+                            <div class="post-links">
+                                <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
+                                <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </header>
+                <div>
+                    <p>{{ post.body }}</p>
                 </div>
-            </header>
-            <div>
-                <p>{{ post.body }}</p>
-            </div>
-        </article>
-    {% endif %}
-{% endfor %}
-
+            </article>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <div class="welcome">
+        <h2>¿Por qué la metodología STEM es la mejor?</h2>
+        <p>
+            La metodología STEM (Ciencia, Tecnología, Ingeniería y Matemáticas) 
+            es una de las mejores estrategias de aprendizaje porque fomenta el pensamiento 
+            crítico, la resolución de problemas y la innovación. Al integrar estas disciplinas, 
+            los estudiantes adquieren habilidades clave para el mundo actual y el futuro.
+        </p>
+        <p>
+            En nuestra plataforma, encontrarás recursos creados por expertos para ayudar a 
+            profesores y estudiantes a mejorar su comprensión de STEM y aplicar el conocimiento 
+            en situaciones del mundo real.
+        </p>
+        <p>
+            <strong>¡Únete a nosotros y descubre cómo STEM puede transformar la educación!</strong>
+        </p>
+    </div>
+{% endif %}
 {% endblock %}
