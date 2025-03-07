@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+{% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
     <form method="POST">
         <label for="title">Título</label>
         <input type="text" name="title" id="title" required>
@@ -11,4 +12,5 @@
         <textarea name="body" id="body" cols="30" rows="10"></textarea>
         <input type="submit", value="Guardar">
     </form>
+{% endif %}
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block header %}
-    <h2>{% block title %}Publicaciones {% endblock %}</h2>
-    {% if g.user %}
+    <h2>{% block title %}Recursos {% endblock %}</h2>
+    {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
         <div class="post-links">
             <a href="{{ url_for('blog.create') }}" class="new-post">Nueva Publicación</a>
         </div>
@@ -21,12 +21,11 @@
                 </div> 
             </div>
             <div>
-                {% if g.user.id == post.author %}
+                {% if g.user and g.user.role in ['instructor_profesores', 'instructor_estudiantes'] and g.user.id == post.author %}
                     <div class="post-links">
                         <a href="{{ url_for('blog.update', id=post.id) }}" class="edit">Editar</a>
                         <a href="{{ url_for('blog.delete', id=post.id) }}" class="delete">Eliminar</a>
                     </div>
-                    
                 {% endif %}
             </div>
         </header>
