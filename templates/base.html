@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+        // Aplicar dark mode antes de que la página cargue
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,14 +25,19 @@
             </div>
             <nav class="user-info">
                 {% if g.user %}
-                <img src="{{ url_for('static', filename='img/user.png')}}" alt="">
-                <span>{{ g.user.username }}</span>
-                <a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+                    <img src="{{ url_for('static', filename='img/user.png')}}" alt="">
+                    <span>{{ g.user.username }}</span>
+                    <a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
                 {% else %}
-                <a href="{{ url_for('auth.register') }}">Registrar Usuario</a>
-                <a href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+                    <a href="{{ url_for('auth.register') }}">Registrar Usuario</a>
+                    <a href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
                 {% endif %}
-            </nav>
+            
+                <button id="dark-mode-toggle">
+                    <img id="dark-mode-icon" src="{{ url_for('static', filename='img/moon.png') }}" alt="Modo Oscuro" width="24">
+                </button>
+
+            </nav>            
         </div>
         
     </header>
@@ -43,5 +54,6 @@
         </div>
         
     </section>
+    <script src="{{ url_for('static', filename='js/dark_mode.js') }}"></script>
 </body>
 </html>

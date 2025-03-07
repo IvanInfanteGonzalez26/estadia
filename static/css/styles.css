@@ -158,22 +158,6 @@ article header h1 {
     font-size: 16px;
 }
 
-/* Botones */
-.btn {
-    display: inline-block;
-    padding: 10px 15px;
-    background: #377ba8;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background: #2c6c97;
-}
-
 /* Estilos para los enlaces de publicación */
 .post-links {
     display: flex;
@@ -213,6 +197,93 @@ article header h1 {
 
 .post-links .delete:hover {
     background-color: #c82333;
+}
+
+/* Dark mode */
+.dark-mode body{
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+.dark-mode article {
+    background: #333;  
+    color: #f5f5f5;  
+}
+
+.dark-mode article .about {
+    color: #d1d1d1;
+}
+
+.dark-mode .header {
+    background-color: #333;
+}
+
+.dark-mode .content {
+    background: #2e2e2e;
+    color: #f5f5f5;
+}
+
+
+.dark-mode .user-info span {
+    color: #fff;
+}
+
+.dark-mode form input, 
+.dark-mode form textarea, 
+.dark-mode form select {
+    background-color: #444;
+    color: #f5f5f5;
+    border: 2px solid #777;
+}
+
+.dark-mode form input:focus, 
+.dark-mode form textarea:focus, 
+.dark-mode form select:focus {
+    border-color: #ffdd57;
+    box-shadow: 0 0 8px rgba(255, 221, 87, 0.5);
+}
+
+.dark-mode input[type="submit"]:hover { 
+    background: #ffcc00;
+    color: #333;
+    box-shadow: 0 0 10px rgba(255, 221, 87, 0.8);
+}
+
+#dark-mode-toggle {
+    background: none;
+    border: 3px solid #ccc;  /* Contorno gris claro */
+    border-radius: 10px;  /* Bordes redondeados */
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;  /* Tamaño del botón cuadrado */
+    height: 42px;
+    transition: border 0.3s ease, box-shadow 0.3s ease, transform 0.2s;
+}
+
+/* Ajustar tamaño de la imagen dentro del botón */
+#dark-mode-toggle img {
+    width: 28px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover: cambia el color del contorno al color actual */
+#dark-mode-toggle:hover {
+    border-color: #ffdd57;  /* Amarillo vibrante */
+    box-shadow: 0 0 8px rgba(255, 221, 87, 0.5);  /* Efecto de iluminación */
+    transform: scale(1.1);  /* Efecto de zoom */
+}
+
+/* Modo oscuro: cambiar el color del contorno */
+.dark-mode #dark-mode-toggle {
+    border-color: #ffdd57;
+}
+
+/* Hover en modo oscuro */
+.dark-mode #dark-mode-toggle:hover {
+    border-color: #ffcc00;  /* Un amarillo más intenso */
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.8);
 }
 
 /* Responsive Design */
