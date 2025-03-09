@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>Exámenes Disponibles</h2>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for quiz in quizzes %}
+            <li>
+                <a href="{{ url_for('quiz.quiz_detail', id=quiz.id) }}">{{ quiz.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

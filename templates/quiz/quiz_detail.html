@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{{ quiz.title }}</h2>
+{% endblock %}
+
+{% block content %}
+    <p>{{ quiz.question }}</p>
+    <form method="POST">
+        <label><input type="radio" name="answer" value="{{ quiz.option_a }}"> {{ quiz.option_a }}</label><br>
+        <label><input type="radio" name="answer" value="{{ quiz.option_b }}"> {{ quiz.option_b }}</label><br>
+        <label><input type="radio" name="answer" value="{{ quiz.option_c }}"> {{ quiz.option_c }}</label><br>
+        <label><input type="radio" name="answer" value="{{ quiz.option_d }}"> {{ quiz.option_d }}</label><br>
+        <input type="submit" value="Enviar">
+    </form>
+{% endblock %}
