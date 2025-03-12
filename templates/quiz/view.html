@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{{ title }}</h2>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for question in questions %}
+            <li>
+                <strong>{{ question.question }}</strong><br>
+                A) {{ question.option_a }} <br>
+                B) {{ question.option_b }} <br>
+                C) {{ question.option_c }} <br>
+                D) {{ question.option_d }}
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
+{% endblock %}

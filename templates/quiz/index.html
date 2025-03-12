@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h2>Exámenes Disponibles</h2>
+    <h2 class="quiz-title">📖 {% block title %}Exámenes {% endblock %}</h2>
 {% endblock %}
 
 {% block content %}
-    <ul>
+    <div class="quiz-container">
         {% for quiz in quizzes %}
-            <li>
-                <a href="{{ url_for('quiz.quiz_detail', id=quiz.id) }}">{{ quiz.title }}</a>
-            </li>
+            <div class="quiz-card">
+                <a href="{{ url_for('quiz.view_quiz', title=quiz) }}">{{ quiz }}</a>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
