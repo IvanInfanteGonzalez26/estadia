@@ -4,24 +4,23 @@ class Quiz(db.Model):
     __tablename__ = 'quizzes'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # 📌 Nuevo campo
     question = db.Column(db.Text, nullable=False)
     option_a = db.Column(db.String(255), nullable=False)
     option_b = db.Column(db.String(255), nullable=False)
     option_c = db.Column(db.String(255), nullable=False)
     option_d = db.Column(db.String(255), nullable=False)
     correct_answer = db.Column(db.String(255), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # 🔹 Quién lo creó
 
-    def __init__(self, title, question, option_a, option_b, option_c, option_d, correct_answer, author_id):
+    def __init__(self, title, creator_id, question, option_a, option_b, option_c, option_d, correct_answer):
         self.title = title
+        self.creator_id = creator_id  # 📌 Guardar quién lo creó
         self.question = question
         self.option_a = option_a
         self.option_b = option_b
         self.option_c = option_c
         self.option_d = option_d
         self.correct_answer = correct_answer
-        self.author_id = author_id
-
 
 class StudentAttempt(db.Model):
     __tablename__ = 'student_attempts'

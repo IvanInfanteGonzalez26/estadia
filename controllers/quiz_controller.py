@@ -10,22 +10,45 @@ quiz = Blueprint('quiz', __name__, url_prefix='/quiz')
 @quiz.route('/')
 @login_required
 def index():
-    # 🔹 Obtener los títulos únicos de los exámenes
-    quiz_titles = db.session.query(Quiz.title).distinct().all()
+    if g.user.role in ["instructor_profesores", "instructor_estudiantes"]:
+        # 🔹 Instructores solo ven los exámenes que ellos crearon
+        quizzes = db.session.query(Quiz.title).filter_by(creator_id=g.user.id).distinct().all()
 
-    return render_template('quiz/index.html', quizzes=[title[0] for title in quiz_titles])
+    elif g.user.role == "profesor":
+        # 🔹 Profesores ven solo exámenes de instructores de profesores
+        quizzes = (
+            db.session.query(Quiz.title)
+            .join(User, Quiz.creator_id == User.id)
+            .filter(User.role == "instructor_profesores")
+            .distinct()
+            .all()
+        )
 
+    elif g.user.role == "estudiante":
+        # 🔹 Estudiantes ven solo exámenes de instructores de estudiantes
+        quizzes = (
+            db.session.query(Quiz.title)
+            .join(User, Quiz.creator_id == User.id)
+            .filter(User.role == "instructor_estudiantes")
+            .distinct()
+            .all()
+        )
+
+    else:
+        quizzes = []
+
+    return render_template('quiz/index.html', quizzes=[title[0] for title in quizzes])
 
 # ✅ **Ruta para que los instructores creen exámenes**
 @quiz.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
-    if g.user.role not in ['instructor_profesores', 'instructor_estudiantes']:
+    if g.user.role not in ["instructor_profesores", "instructor_estudiantes"]:
         flash("No tienes permisos para crear exámenes.")
         return redirect(url_for('quiz.index'))
 
     if request.method == 'POST':
-        title = request.form.get('title')
+        title = request.form['title']
         questions = request.form.getlist('question')
         options_a = request.form.getlist('option_a')
         options_b = request.form.getlist('option_b')
@@ -33,22 +56,21 @@ def create():
         options_d = request.form.getlist('option_d')
         correct_answers = request.form.getlist('correct_answer')
 
-        # Guardar cada pregunta en la base de datos
         for i in range(len(questions)):
-            new_question = Quiz(
+            new_quiz = Quiz(
                 title=title,
+                creator_id=g.user.id,  # 📌 Guardar quién lo creó
                 question=questions[i],
                 option_a=options_a[i],
                 option_b=options_b[i],
                 option_c=options_c[i],
                 option_d=options_d[i],
-                correct_answer=correct_answers[i],
-                author_id=g.user.id
+                correct_answer=correct_answers[i]
             )
-            db.session.add(new_question)
-        
+            db.session.add(new_quiz)
+
         db.session.commit()
-        flash("Examen creado exitosamente.")
+        flash("Examen creado con éxito.")
         return redirect(url_for('quiz.index'))
 
     return render_template('quiz/create.html')
