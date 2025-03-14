@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{{ title }}</h2>
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% for question in questions %}
+            <fieldset>
+                <legend>{{ question.question }}</legend>
+                <label><input type="radio" name="question_{{ question.id }}" value="A"> {{ question.option_a }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="B"> {{ question.option_b }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="C"> {{ question.option_c }}</label><br>
+                <label><input type="radio" name="question_{{ question.id }}" value="D"> {{ question.option_d }}</label>
+            </fieldset>
+        {% endfor %}
+        <input type="submit" value="Enviar Respuestas">
+    </form>
+{% endblock %}

@@ -10,8 +10,9 @@ class Quiz(db.Model):
     option_c = db.Column(db.String(255), nullable=False)
     option_d = db.Column(db.String(255), nullable=False)
     correct_answer = db.Column(db.String(255), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # 🔹 Quién lo creó
 
-    def __init__(self, title, question, option_a, option_b, option_c, option_d, correct_answer):
+    def __init__(self, title, question, option_a, option_b, option_c, option_d, correct_answer, author_id):
         self.title = title
         self.question = question
         self.option_a = option_a
@@ -19,3 +20,17 @@ class Quiz(db.Model):
         self.option_c = option_c
         self.option_d = option_d
         self.correct_answer = correct_answer
+        self.author_id = author_id
+
+
+class StudentAttempt(db.Model):
+    __tablename__ = 'student_attempts'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'), nullable=False)
+    score = db.Column(db.Float, nullable=False)  # 🔹 Puntaje obtenido
+
+    def __init__(self, student_id, quiz_id, score):
+        self.student_id = student_id
+        self.quiz_id = quiz_id
+        self.score = score

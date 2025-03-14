@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>➕ {% block title %}Crear Examen{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <label for="title">Título del Examen:</label>
+        <input type="text" name="title" required>
+
+        <div id="questions-container">
+            <div class="question">
+                <label>Pregunta:</label>
+                <input type="text" name="question" required>
+                <label>Opción A:</label>
+                <input type="text" name="option_a" required>
+                <label>Opción B:</label>
+                <input type="text" name="option_b" required>
+                <label>Opción C:</label>
+                <input type="text" name="option_c" required>
+                <label>Opción D:</label>
+                <input type="text" name="option_d" required>
+                <label>Respuesta Correcta (A, B, C o D):</label>
+                <input type="text" name="correct_answer" required>
+            </div>
+        </div>
+
+        <button type="button" id="add-question">➕ Agregar Pregunta</button>
+        <input type="submit" value="Crear Examen">
+    </form>
+
+    <script>
+        document.getElementById('add-question').addEventListener('click', function() {
+            let container = document.getElementById('questions-container');
+            let newQuestion = container.firstElementChild.cloneNode(true);
+            container.appendChild(newQuestion);
+        });
+    </script>
+{% endblock %}

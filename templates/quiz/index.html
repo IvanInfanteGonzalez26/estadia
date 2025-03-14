@@ -5,10 +5,22 @@
 {% endblock %}
 
 {% block content %}
+    {% if g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
+        <div class="quiz-actions">
+            <a href="{{ url_for('quiz.create') }}" class="new-quiz">➕ Crear Examen</a>
+        </div>
+    {% endif %}
+
     <div class="quiz-container">
         {% for quiz in quizzes %}
             <div class="quiz-card">
-                <a href="{{ url_for('quiz.view_quiz', title=quiz) }}">{{ quiz }}</a>
+                <a href="{{ url_for('quiz.attempt_quiz', title=quiz) }}">{{ quiz }}</a>
+
+                {% if g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
+                    <form method="POST" action="{{ url_for('quiz.delete', title=quiz) }}">
+                        <button type="submit" class="delete-quiz">🗑 Eliminar</button>
+                    </form>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
