@@ -116,7 +116,7 @@ def attempt_quiz(title):
         final_score = (score / total_questions) * 100
 
         # Guardar el intento
-        attempt = StudentAttempt(student_id=g.user.id, quiz_id=title, score=final_score)
+        attempt = StudentAttempt(student_id=g.user.id, quiz_id=questions[0].id, score=final_score)
         db.session.add(attempt)
         db.session.commit()
 

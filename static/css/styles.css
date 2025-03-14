@@ -341,6 +341,56 @@ article header h1 {
     color: white;
 }
 
+.quiz-question {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-question legend {
+    font-weight: bold;
+    color: #333;
+}
+
+.submit-quiz {
+    background-color: #377ba8;
+    color: white;
+    padding: 10px 15px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.submit-quiz:hover {
+    background-color: #2c6c97;
+}
+
+/* 🔥 Modo Oscuro */
+.dark-mode .quiz-question {
+    background: #333;
+    color: white;
+    border: 1px solid #ffdd57;
+}
+
+.dark-mode .quiz-question legend {
+    color: #ffdd57;
+}
+
+.dark-mode .submit-quiz {
+    background-color: #ffdd57;
+    color: #333;
+}
+
+.dark-mode .submit-quiz:hover {
+    background-color: #ffaa00;
+}
+
 /* Dark mode */
 .dark-mode body{
     background-color: #1e1e1e;
