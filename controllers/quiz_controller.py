@@ -77,15 +77,25 @@ def create():
 
 @quiz.route('/delete/<string:title>', methods=['POST'])
 @login_required
-def delete(title):
+def delete_quiz(title):
     if g.user.role not in ['instructor_profesores', 'instructor_estudiantes']:
         flash("No tienes permisos para eliminar exámenes.")
         return redirect(url_for('quiz.index'))
 
-    # Borrar todas las preguntas relacionadas con el título del examen
-    Quiz.query.filter_by(title=title).delete()
+    # Obtener el ID real del quiz
+    quiz = Quiz.query.filter_by(title=title).first()
+
+    if not quiz:
+        flash("El examen no existe.")
+        return redirect(url_for('quiz.index'))
+
+    # 🔹 Primero, eliminar los intentos de estudiantes relacionados
+    StudentAttempt.query.filter_by(quiz_id=quiz.id).delete()
+
+    # 🔹 Luego, eliminar el examen
+    db.session.delete(quiz)
     db.session.commit()
-    
+
     flash("Examen eliminado correctamente.")
     return redirect(url_for('quiz.index'))
 
@@ -96,11 +106,16 @@ def attempt_quiz(title):
         flash("No tienes permisos para realizar exámenes.")
         return redirect(url_for('quiz.index'))
 
-    # Verificar si ya hizo el examen
-    existing_attempt = StudentAttempt.query.filter_by(student_id=g.user.id, quiz_id=title).first()
-    if existing_attempt:
-        flash("Ya has realizado este examen.")
+    # 🔹 Obtener el ID del quiz basado en el título
+    quiz = Quiz.query.filter_by(title=title).first()
+    if not quiz:
+        flash("Examen no encontrado.")
         return redirect(url_for('quiz.index'))
+
+    # 🔹 Verificar si ya hizo el examen usando el ID del examen
+    existing_attempt = StudentAttempt.query.filter_by(student_id=g.user.id, quiz_id=quiz.id).first()
+    if existing_attempt:
+        return render_template('quiz/attempt.html', title=title, questions=[], exam_completed=True)
 
     questions = Quiz.query.filter_by(title=title).all()
     
@@ -115,15 +130,15 @@ def attempt_quiz(title):
         
         final_score = (score / total_questions) * 100
 
-        # Guardar el intento
-        attempt = StudentAttempt(student_id=g.user.id, quiz_id=questions[0].id, score=final_score)
+        # 🔹 Guardar el intento con el quiz_id correcto (ID numérico, no título)
+        attempt = StudentAttempt(student_id=g.user.id, quiz_id=quiz.id, score=final_score)
         db.session.add(attempt)
         db.session.commit()
 
         flash(f"Examen completado. Tu puntaje: {final_score}%")
         return redirect(url_for('quiz.index'))
 
-    # Mezclar preguntas en orden aleatorio
+    # 🔹 Mezclar preguntas en orden aleatorio
     random.shuffle(questions)
 
-    return render_template('quiz/attempt.html', title=title, questions=questions)
+    return render_template('quiz/attempt.html', title=title, questions=questions, exam_completed=False)

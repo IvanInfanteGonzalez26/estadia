@@ -5,16 +5,24 @@
 {% endblock %}
 
 {% block content %}
-    <form method="POST">
-        {% for question in questions %}
-            <fieldset class="quiz-question">
-                <legend>{{ question.question }}</legend>
-                <label><input type="radio" name="question_{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="B"> {{ question.option_b }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="C"> {{ question.option_c }}</label><br>
-                <label><input type="radio" name="question_{{ question.id }}" value="D"> {{ question.option_d }}</label>
-            </fieldset>
-        {% endfor %}
-        <button type="submit" class="submit-quiz">📝 Enviar Respuestas</button>
-    </form>
+    {% if not exam_completed %}
+        <form method="POST" id="quiz-form">
+            {% for question in questions %}
+                <fieldset class="quiz-question">
+                    <legend>{{ question.question }}</legend>
+                    <label><input type="radio" name="question_{{ question.id }}" value="A" required> {{ question.option_a }}</label><br>
+                    <label><input type="radio" name="question_{{ question.id }}" value="B"> {{ question.option_b }}</label><br>
+                    <label><input type="radio" name="question_{{ question.id }}" value="C"> {{ question.option_c }}</label><br>
+                    <label><input type="radio" name="question_{{ question.id }}" value="D"> {{ question.option_d }}</label>
+                </fieldset>
+            {% endfor %}
+            <button type="submit" class="submit-quiz">📝 Enviar Respuestas</button>
+        </form>
+    {% else %}
+        <div class="quiz-completed">
+            <h3>✅ ¡Examen enviado!</h3>
+            <p>Tu examen ha sido enviado correctamente. No puedes volver a intentarlo.</p>
+            <a href="{{ url_for('quiz.index') }}" class="back-button">🔙 Volver a Exámenes</a>
+        </div>
+    {% endif %}
 {% endblock %}
