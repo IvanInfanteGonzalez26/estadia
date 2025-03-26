@@ -1,0 +1,3 @@
+# Que el profe pueda ver los scores de sus alumnos
+# Que tenga un pdf de informacion
+# Que tenga acceso a los videos del curso con realimentaciones

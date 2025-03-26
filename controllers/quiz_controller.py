@@ -75,7 +75,7 @@ def create():
 
     return render_template('quiz/create.html')
 
-@quiz.route('/delete/<string:title>', methods=['POST'])
+@quiz.route('/delete/<string:title>', methods=['POST'], endpoint='delete')
 @login_required
 def delete_quiz(title):
     if g.user.role not in ['instructor_profesores', 'instructor_estudiantes']:
