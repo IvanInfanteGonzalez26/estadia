@@ -34,6 +34,9 @@
                             <a href="{{ url_for('blog.index') }}">Recursos</a>
                             <a href="{{ url_for('quiz.index') }}">Exámenes</a>
                             <a href="{{ url_for('quiz.index') }}">Videos</a>
+                            {% if g.user.role in ['instructor_profesores', 'instructor_estudiantes'] %}
+                                <a href="{{ url_for('quiz.results') }}">Scores</a>
+                            {% endif %}
                             <a href="{{ url_for('auth.logout') }}" class="logout-btn">Cerrar Sesión</a>
                         </div>
                     </div>

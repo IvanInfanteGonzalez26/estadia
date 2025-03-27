@@ -99,6 +99,24 @@ def delete_quiz(title):
     flash("Examen eliminado correctamente.")
     return redirect(url_for('quiz.index'))
 
+@quiz.route('/results')
+@login_required
+def results():
+    if g.user.role not in ['instructor_profesores', 'instructor_estudiantes']:
+        flash("No tienes permisos para ver resultados.")
+        return redirect(url_for('quiz.index'))
+
+    # Filtrar por los exámenes que creó este instructor
+    attempts = (
+        db.session.query(StudentAttempt, User, Quiz)
+        .join(User, StudentAttempt.student_id == User.id)
+        .join(Quiz, StudentAttempt.quiz_id == Quiz.id)
+        .filter(Quiz.creator_id == g.user.id)
+        .all()
+    )
+
+    return render_template('quiz/results.html', attempts=attempts)
+
 @quiz.route('/attempt/<string:title>', methods=['GET', 'POST'])
 @login_required
 def attempt_quiz(title):
